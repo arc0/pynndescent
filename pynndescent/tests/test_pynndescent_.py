@@ -449,10 +449,10 @@ def test_prepare_rng_state():
     index1.prepare()
     post_prepare_state1 = index1.rng_state.copy()
 
-    pre_prepare_state2 = index2.rng_state.copy()
     index2.prepare()
     post_prepare_state2 = index2.rng_state.copy()
 
+    # the random state should be consistent with the same seed state
+    # and both before and after compression
     np.testing.assert_equal(pre_prepare_state1, post_prepare_state1)
-    np.testing.assert_equal(pre_prepare_state2, post_prepare_state2)
     np.testing.assert_equal(pre_prepare_state1, post_prepare_state2)

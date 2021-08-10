@@ -435,3 +435,24 @@ def test_joblib_dump():
 
     np.testing.assert_equal(neighbors1, neighbors2)
     np.testing.assert_equal(distances1, distances2)
+
+
+def test_prepare_rng_state():
+    seed = np.random.RandomState(42)
+
+    x1 = seed.normal(0, 100, (1000, 50))
+
+    index1 = NNDescent(data=x1, metric="euclidean", n_neighbors=10, random_state=np.random.RandomState(42))
+    index2 = NNDescent(data=x1, metric="euclidean", n_neighbors=10, random_state=np.random.RandomState(42))
+
+    pre_prepare_state1 = index1.rng_state.copy()
+    index1.prepare()
+    post_prepare_state1 = index1.rng_state.copy()
+
+    pre_prepare_state2 = index2.rng_state.copy()
+    index2.prepare()
+    post_prepare_state2 = index2.rng_state.copy()
+
+    np.testing.assert_equal(pre_prepare_state1, post_prepare_state1)
+    np.testing.assert_equal(pre_prepare_state2, post_prepare_state2)
+    np.testing.assert_equal(pre_prepare_state1, post_prepare_state2)

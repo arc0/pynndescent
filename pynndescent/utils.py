@@ -29,17 +29,19 @@ def tau_rand_int(state):
     -------
     A (pseudo)-random int32 value
     """
-    state[0] = (((state[0] & 4294967294) << 12) & 0xFFFFFFFF) ^ (
-        (((state[0] << 13) & 0xFFFFFFFF) ^ state[0]) >> 19
+    result = state.copy()
+
+    result[0] = (((result[0] & 4294967294) << 12) & 0xFFFFFFFF) ^ (
+        (((result[0] << 13) & 0xFFFFFFFF) ^ result[0]) >> 19
     )
-    state[1] = (((state[1] & 4294967288) << 4) & 0xFFFFFFFF) ^ (
-        (((state[1] << 2) & 0xFFFFFFFF) ^ state[1]) >> 25
+    result[1] = (((result[1] & 4294967288) << 4) & 0xFFFFFFFF) ^ (
+        (((result[1] << 2) & 0xFFFFFFFF) ^ result[1]) >> 25
     )
-    state[2] = (((state[2] & 4294967280) << 17) & 0xFFFFFFFF) ^ (
-        (((state[2] << 3) & 0xFFFFFFFF) ^ state[2]) >> 11
+    result[2] = (((result[2] & 4294967280) << 17) & 0xFFFFFFFF) ^ (
+        (((result[2] << 3) & 0xFFFFFFFF) ^ result[2]) >> 11
     )
 
-    return state[0] ^ state[1] ^ state[2]
+    return result[0] ^ result[1] ^ result[2]
 
 
 @numba.njit("f4(i8[:])", cache=True)
